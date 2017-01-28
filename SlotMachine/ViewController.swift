@@ -21,7 +21,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     var vic = 0
     var los = 0
     
-    let numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    let pokemon = [#imageLiteral(resourceName: "bulbasaur"), #imageLiteral(resourceName: "charmander"), #imageLiteral(resourceName: "squirtle"), #imageLiteral(resourceName: "pikachu")]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,18 +29,47 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         pickerView.delegate = self
         pickerView.dataSource = self
         
-        playButton.frame = CGRect(x: 110, y: 350, width: 200, height: 200)
+        playButton.frame = CGRect(x: 140, y: 400, width: 150, height: 150)
         playButton.layer.cornerRadius = 0.5 * playButton.bounds.size.width
         playButton.clipsToBounds = true
         
     }
 
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return numbers.count
+        return pokemon.count
     }
     
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return numbers[row]
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        
+        let myView = UIView(frame: CGRect(x: 20, y: 20, width: 100, height: 100))
+        let myImageView = UIImageView(frame: CGRect(x: 20, y: 20, width: 70, height: 70))
+        
+        var rowString = String()
+        switch row {
+        case 0:
+            rowString = "Bulbasaur"
+            myImageView.image = UIImage(named:"bulbasaur.png")
+        case 1:
+            rowString = "Charmander"
+            myImageView.image = UIImage(named:"charmander.png")
+        case 2:
+            rowString = "Squirtle"
+            myImageView.image = UIImage(named:"squirtle.png")
+        case 3:
+            rowString = "Pikachu"
+            myImageView.image = UIImage(named:"pikachu.png")
+        default:
+            rowString = "Error: too many rows"
+            myImageView.image = nil
+        }
+        
+        myView.addSubview(myImageView)
+        
+        return myView
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+        return 100.0
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -49,8 +78,9 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     @IBAction func playButtonPressed(_ sender: Any) {
         for index in 0...2 {
-            let rand = Int(arc4random_uniform(10))
+            let rand = Int(arc4random_uniform(4))
             pickerView.selectRow(rand, inComponent: index, animated: true)
+            print(rand)
         }
         
         let pickerView0 = pickerView.selectedRow(inComponent: 0)
